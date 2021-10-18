@@ -1,11 +1,11 @@
 using NUnit.Framework;
 
-namespace poker {
+namespace Poker.Domain {
     public class DeckTest {
         [Test]
         public void fillDeckWithCards() {
-            Deck deck = new Deck();
-            Assert.AreEqual(52, deck.getDeck().Count);
+            Deck Deck = new Deck();
+            Assert.AreEqual(52, Deck.GetDeck.Count);
         }
     }
 

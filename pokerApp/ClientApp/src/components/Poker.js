@@ -1,11 +1,34 @@
 import React, { Component } from "react";
 
+const Emoji = props => (
+    <span
+        className="emoji"
+        role="img"
+        aria-label={props.label ? props.label : ""}
+        aria-hidden={props.label ? "false" : "true"}
+        >
+            {props.symbol}
+        </span>
+);
+
+function AddEmojiToHTMLDiv(Suit, Rank) {
+    console.log(Rank);
+    console.log(Suit);
+    if (Suit === 3) {
+        
+        //const rootElement = document.getElementById('CardDiv');
+        //const element = (<Emoji symbol="♦️" label="Diamond"/>);
+        //rootElement.appendChild(element);
+    }
+}
+
+export default Emoji;
+
 export class Poker extends Component{
     async getCardFromDeck() {
-        console.log("klik");
         try {
-            const response = await fetch('http://localhost:5000/GetTopCardFromDeck/getcard', {
-                method: 'POST',
+            const response = await fetch('GetCardFromDeck', {
+                method: 'GET',
                 headers: {
                     'Accept': 'application/json',
                     'Content-Type': 'application/json'
@@ -13,11 +36,9 @@ export class Poker extends Component{
             });
             if (response.ok) {
                 const topCard = await response.json();
-                console.log(topCard);
-                //const topCardSuit = topCard["topCardFromDeck"]["suit"];
-                //const topCardRank = topCard["topCardFromDeck"]["rank"];
-                //console.log(topCardSuit);
-                //console.log(topCardRank);
+                const topCardSuit = topCard["getSuit"];
+                const topCardRank = topCard["getRank"];
+                AddEmojiToHTMLDiv(topCardSuit, topCardRank);
             } else {
                 console.error(response.statusText);
             }
@@ -34,6 +55,13 @@ export class Poker extends Component{
                     Poker imp
                 </p>
                 <button onClick={() => this.getCardFromDeck()}>kaart</button>
+                <div id="CardDiv">
+                    <Emoji symbol="♣️" label="Club"/>
+                    <Emoji symbol="♦️" label="Diamond"/>
+                    <Emoji symbol="♠️" label="Spade"/>
+                    <Emoji symbol="♥️" label="Heart"/>
+                </div>
+                
             </div>
         )
     }

@@ -1,18 +1,18 @@
 using NUnit.Framework;
 
-namespace poker {
+namespace Poker.Domain {
     public class Tests {
         [Test]
         public void cardReturnsASuit()
         {   
             Card card = new Card(Suits.CLUBS, Ranks.ACE);
-            Assert.AreEqual(Suits.CLUBS, card.getSuit());
+            Assert.AreEqual(Suits.CLUBS, card.GetSuit);
         }
 
         [Test]
         public void cardReturnsARank() {
             Card card = new Card(Suits.CLUBS, Ranks.ACE);
-            Assert.AreEqual(Ranks.ACE, card.getRank());
+            Assert.AreEqual(Ranks.ACE, card.GetRank);
         }
 
         [Test]

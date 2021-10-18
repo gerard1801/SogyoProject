@@ -1,16 +1,12 @@
 using System;
 using System.Collections;
 
-namespace poker {
+namespace Poker.Domain {
     public class Deck {
-        private Stack deck;
+        public Stack GetDeck { get; }
 
         public Deck() {
-            this.deck = fillDeckWithCards();
-        }
-
-        public Stack getDeck() {
-            return this.deck;
+            this.GetDeck = fillDeckWithCards();
         }
         private Stack fillDeckWithCards() {
             Stack tempDeck = new Stack();
@@ -23,7 +19,7 @@ namespace poker {
         }
 
         public Card getTopCardFromDeck() {
-            return (Card) this.deck.Peek();
+            return (Card) this.GetDeck.Peek();
         }
     }
 }
