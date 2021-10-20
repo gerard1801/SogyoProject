@@ -18,9 +18,9 @@ namespace pokerApp.Controllers {
     [HttpGet]
     public Card GetTopCard() {
         Deck deck = new Deck();
-        Card TopCard = deck.getTopCardFromDeck();
-        Suits test = (Suits)1;
-        Console.WriteLine(test);
+        Card TopCard = deck.GetTopCardFromDeck();
+        deck.RemoveTopCardFromDeck();
+        Console.WriteLine(TopCard);
 
         return TopCard;
     }

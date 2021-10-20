@@ -25,5 +25,14 @@ namespace Poker.Domain {
         public int getRankValue() {
             return (int) this.GetRank;
         }
+        public String CompareCards(Card Card1, Card Card2) {
+            if (Card1.GetRank > Card2.GetRank) {
+                return "First";
+            } else if (Card1.GetRank < Card2.GetRank) {
+                return "Second";
+            } else {
+                return "Equal";
+            }
+        }
     }
 }

@@ -1,4 +1,5 @@
-import React, { Component } from "react";
+import React, { Component, useState } from "react";
+
 
 const Emoji = props => (
     <span
@@ -11,20 +12,39 @@ const Emoji = props => (
         </span>
 );
 
-function AddEmojiToHTMLDiv(Suit, Rank) {
-    console.log(Rank);
-    console.log(Suit);
-    if (Suit === 3) {
-        
-        //const rootElement = document.getElementById('CardDiv');
-        //const element = (<Emoji symbol="♦️" label="Diamond"/>);
-        //rootElement.appendChild(element);
-    }
-}
-
 export default Emoji;
 
 export class Poker extends Component{
+
+    constructor(props) {
+        super(props);
+        this.state = {
+            cards: []
+        };
+    }
+
+    addCardToState = (topCardSuit, topCardRank) => {
+        const newState = [...this.state.cards];
+        if (newState.length > 0) {
+            var newIndex = newState[newState.length-1].id;
+        } else {
+            var newIndex = 0;
+        }
+        if (topCardSuit === 0) {
+            newState.push({cardRanks: topCardRank, cardSuitsSymbol: "♣️", cardSuitsLabel: "clubs", id: newIndex+1})
+        }
+        if (topCardSuit === 1) {
+            newState.push({cardRanks: topCardRank, cardSuitsSymbol: "♦️", cardSuitsLabel: "diamonds", id: newIndex+1})
+        }
+        if (topCardSuit === 2) {
+            newState.push({cardRanks: topCardRank, cardSuitsSymbol: "♥️", cardSuitsLabel: "hearts", id: newIndex+1})
+        }
+        if (topCardSuit === 3) {
+            newState.push({cardRanks: topCardRank, cardSuitsSymbol: "♠️", cardSuitsLabel: "spades", id: newIndex+1})
+        }
+        this.setState({cards: newState})
+    }
+
     async getCardFromDeck() {
         try {
             const response = await fetch('GetCardFromDeck', {
@@ -36,9 +56,7 @@ export class Poker extends Component{
             });
             if (response.ok) {
                 const topCard = await response.json();
-                const topCardSuit = topCard["getSuit"];
-                const topCardRank = topCard["getRank"];
-                AddEmojiToHTMLDiv(topCardSuit, topCardRank);
+                this.addCardToState(topCard["getSuit"], topCard["getRank"])
             } else {
                 console.error(response.statusText);
             }
@@ -56,12 +74,13 @@ export class Poker extends Component{
                 </p>
                 <button onClick={() => this.getCardFromDeck()}>kaart</button>
                 <div id="CardDiv">
-                    <Emoji symbol="♣️" label="Club"/>
-                    <Emoji symbol="♦️" label="Diamond"/>
-                    <Emoji symbol="♠️" label="Spade"/>
-                    <Emoji symbol="♥️" label="Heart"/>
+                    {this.state.cards.map(cards => (
+                        <div key={cards.id}> 
+                            <label>{cards.cardRanks}</label>
+                            <Emoji symbol={cards.cardSuitsSymbol} label={cards.cardSuitsLabel}/>
+                        </div>
+                    ))}
                 </div>
-                
             </div>
         )
     }
