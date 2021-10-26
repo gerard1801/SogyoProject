@@ -11,18 +11,17 @@ namespace pokerApp.Controllers {
     [ApiController]
     [Route("[controller]")]
     public class GetCardFromDeckController : ControllerBase {
-        
-        //Card test = deck.getTopCardFromDeck();
-        
 
     [HttpGet]
     public Card GetTopCard() {
-        Deck deck = new Deck();
-        Card TopCard = deck.GetTopCardFromDeck();
+        var obj = HttpContext.Session.GetObjectFromJson<IList<Card>>("deck");
+        Deck deck = new Deck(obj);
+        Card topCard = deck.GetTopCardFromDeck();
         deck.RemoveTopCardFromDeck();
-        Console.WriteLine(TopCard);
 
-        return TopCard;
+        HttpContext.Session.SetObjectAsJson("deck", deck.deck.ToList());
+
+        return topCard;
     }
     }
 }

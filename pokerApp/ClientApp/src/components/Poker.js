@@ -9,7 +9,7 @@ const Emoji = props => (
         aria-hidden={props.label ? "false" : "true"}
         >
             {props.symbol}
-        </span>
+    </span>
 );
 
 export default Emoji;
@@ -19,7 +19,7 @@ export class Poker extends Component{
     constructor(props) {
         super(props);
         this.state = {
-            cards: []
+            cards: [],
         };
     }
 
@@ -45,6 +45,46 @@ export class Poker extends Component{
         this.setState({cards: newState})
     }
 
+    render() {
+        return (
+            <div>
+                <h2>Poker</h2>
+                <p>
+                    Poker imp
+                </p>
+                <button onClick={() => this.getCardFromDeck()}>kaart</button>
+                <button onClick={() => this.GetNewShuffledDeck()}>deck laden</button>
+                <div id="CardDiv">
+                    {this.state.cards.map(cards => (
+                        <div key={cards.id}> 
+                            <label>{cards.cardRanks}</label>
+                            <Emoji symbol={cards.cardSuitsSymbol} label={cards.cardSuitsLabel}/>
+                        </div>
+                    ))}
+                </div>
+            </div>
+        )
+    }
+
+    async GetNewShuffledDeck() {
+        try {
+            const response = await fetch('GetNewShuffledDeck', {
+                method: 'GET',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                }
+            });
+            if (response.ok) {
+                const deck = await response.json();
+            } else {
+                console.error(response.statusText);
+            }
+        } catch (error) {
+            console.error(error.toString());
+        }
+    }
+
     async getCardFromDeck() {
         try {
             const response = await fetch('GetCardFromDeck', {
@@ -56,32 +96,13 @@ export class Poker extends Component{
             });
             if (response.ok) {
                 const topCard = await response.json();
-                this.addCardToState(topCard["getSuit"], topCard["getRank"])
+                console.log(topCard)
+                this.addCardToState(topCard["suit"], topCard["rank"])
             } else {
                 console.error(response.statusText);
             }
         } catch (error) {
             console.error(error.toString());
         }
-    }
-
-    render() {
-        return (
-            <div>
-                <h2>Poker</h2>
-                <p>
-                    Poker imp
-                </p>
-                <button onClick={() => this.getCardFromDeck()}>kaart</button>
-                <div id="CardDiv">
-                    {this.state.cards.map(cards => (
-                        <div key={cards.id}> 
-                            <label>{cards.cardRanks}</label>
-                            <Emoji symbol={cards.cardSuitsSymbol} label={cards.cardSuitsLabel}/>
-                        </div>
-                    ))}
-                </div>
-            </div>
-        )
     }
 }

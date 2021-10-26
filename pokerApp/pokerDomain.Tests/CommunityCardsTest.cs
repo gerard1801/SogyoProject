@@ -7,20 +7,20 @@ namespace Poker.Domain {
         public void AddCardToCommunityCards() {
             Card card = new Card(Suits.CLUBS, Ranks.ACE);
             CommunityCards communityCards = new CommunityCards();
-            communityCards.recieveCard(card);
-            Assert.AreEqual(Suits.CLUBS, communityCards.communityCards[0].GetSuit);
-            Assert.AreEqual(Ranks.ACE, communityCards.communityCards[0].GetRank);
+            communityCards.RecieveCard(card);
+            Assert.AreEqual(Suits.CLUBS, communityCards.communityCards[0].suit);
+            Assert.AreEqual(Ranks.ACE, communityCards.communityCards[0].rank);
         }
 
         [Test]
         public void Add5CardsToCommunityCards() {
             Card card = new Card(Suits.CLUBS, Ranks.ACE);
             CommunityCards communityCards = new CommunityCards();
-            communityCards.recieveCard(card);
-            communityCards.recieveCard(card);
-            communityCards.recieveCard(card);
-            communityCards.recieveCard(card);
-            communityCards.recieveCard(card);
+            communityCards.RecieveCard(card);
+            communityCards.RecieveCard(card);
+            communityCards.RecieveCard(card);
+            communityCards.RecieveCard(card);
+            communityCards.RecieveCard(card);
             Assert.AreEqual(5, communityCards.communityCards.Count);
         }
     }

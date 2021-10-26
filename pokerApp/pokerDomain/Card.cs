@@ -11,24 +11,25 @@ namespace Poker.Domain {
         EIGHT=8, NINE=9, TEN=10, JACK=11, QUEEN=12, KING=13
     }
     public class Card {
-        public Suits GetSuit { get; }
-        public Ranks GetRank { get; }
+        public Suits suit { get; }
+        public Ranks rank { get; }
 
-        public Card(Suits suit, Ranks rank) {
-            this.GetSuit = suit;
-            this.GetRank = rank;
+        public Card(Suits suit, Ranks rank) 
+        {
+            this.suit = suit;
+            this.rank = rank;
         }
 
-        public Suits getSuitValue() {
-            return this.GetSuit;
+        public Suits GetSuitValue() {
+            return this.suit;
         }
-        public int getRankValue() {
-            return (int) this.GetRank;
+        public int GetRankValue() {
+            return (int) this.rank;
         }
         public String CompareCards(Card Card1, Card Card2) {
-            if (Card1.GetRank > Card2.GetRank) {
+            if (Card1.rank > Card2.rank) {
                 return "First";
-            } else if (Card1.GetRank < Card2.GetRank) {
+            } else if (Card1.rank < Card2.rank) {
                 return "Second";
             } else {
                 return "Equal";
