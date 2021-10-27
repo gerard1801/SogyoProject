@@ -10,7 +10,6 @@ namespace Poker.Domain {
         {
             this.name = playerName;  
             this.hand = new Hand();
-
         }
         public string GetPlayerName() 
         {

@@ -3,10 +3,14 @@ using System.Collections.Generic;
 
 namespace Poker.Domain {
     public class CommunityCards {
-        public List<Card> communityCards { get; } 
+        public IList<Card> communityCards { get; } 
         private readonly int MaxCCLength = 5;
         public CommunityCards() {
             this.communityCards = new List<Card>();
+        }
+
+        public CommunityCards(IList<Card> communityCards) {
+            this.communityCards = communityCards;
         }
 
         public void RecieveCard(Card card) {

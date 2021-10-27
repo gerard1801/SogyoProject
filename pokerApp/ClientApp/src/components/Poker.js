@@ -1,5 +1,5 @@
 import React, { Component, useState } from "react";
-
+import './Poker.css';
 
 const Emoji = props => (
     <span
@@ -12,54 +12,66 @@ const Emoji = props => (
     </span>
 );
 
-export default Emoji;
+//export default Emoji;
 
-export class Poker extends Component{
+function Poker1() {
+    return (
+        <div>
+            <h2>Poker</h2>
+        </div>
+    )
+}
 
+
+
+export class Poker extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            cards: [],
+            communityCards: [],
         };
     }
 
-    addCardToState = (topCardSuit, topCardRank) => {
-        const newState = [...this.state.cards];
-        if (newState.length > 0) {
-            var newIndex = newState[newState.length-1].id;
-        } else {
-            var newIndex = 0;
+    UpdateCommunityCards = (communityCards) => {
+        const newState = [];
+        for (let i = 0; i< communityCards.length; i++) {
+            const card = communityCards[i];
+            if (card["suit"] === 0) {
+                newState.push({cardRanks: card["rank"], cardSuitsSymbol: "♣️", cardSuitsLabel: "clubs", id: "comCard" + i})
+            }
+            if (card["suit"] === 1) {
+                newState.push({cardRanks: card["rank"], cardSuitsSymbol: "♦️", cardSuitsLabel: "diamonds", id: "comCard" + i})
+            }
+            if (card["suit"] === 2) {
+                newState.push({cardRanks: card["rank"], cardSuitsSymbol: "♥️", cardSuitsLabel: "hearts", id: "comCard" + i})
+            }
+            if (card["suit"] === 3) {
+                newState.push({cardRanks: card["rank"], cardSuitsSymbol: "♠️", cardSuitsLabel: "spades", id: "comCard" + i})
+            }
         }
-        if (topCardSuit === 0) {
-            newState.push({cardRanks: topCardRank, cardSuitsSymbol: "♣️", cardSuitsLabel: "clubs", id: newIndex+1})
-        }
-        if (topCardSuit === 1) {
-            newState.push({cardRanks: topCardRank, cardSuitsSymbol: "♦️", cardSuitsLabel: "diamonds", id: newIndex+1})
-        }
-        if (topCardSuit === 2) {
-            newState.push({cardRanks: topCardRank, cardSuitsSymbol: "♥️", cardSuitsLabel: "hearts", id: newIndex+1})
-        }
-        if (topCardSuit === 3) {
-            newState.push({cardRanks: topCardRank, cardSuitsSymbol: "♠️", cardSuitsLabel: "spades", id: newIndex+1})
-        }
-        this.setState({cards: newState})
+        this.setState({communityCards: newState})
     }
 
     render() {
         return (
             <div>
                 <h2>Poker</h2>
-                <p>
-                    Poker imp
-                </p>
                 <button onClick={() => this.getCardFromDeck()}>kaart</button>
                 <button onClick={() => this.GetNewShuffledDeck()}>deck laden</button>
-                <div id="CardDiv">
-                    {this.state.cards.map(cards => (
-                        <div key={cards.id}> 
-                            <label>{cards.cardRanks}</label>
-                            <Emoji symbol={cards.cardSuitsSymbol} label={cards.cardSuitsLabel}/>
-                        </div>
+                <button onClick={() => this.getCommunityCards()}>communityCards</button>
+                <div id="communityCards">
+                    {this.state.communityCards.map(cards => (
+                        <div key={cards.id} className="outline shadow rounded"> 
+                            <div className="top">
+                                <span>{cards.cardRanks}</span>
+                                <span><Emoji symbol={cards.cardSuitsSymbol} label={cards.cardSuitsLabel}/></span>
+                            </div>
+                            <h1><Emoji symbol={cards.cardSuitsSymbol} label={cards.cardSuitsLabel}/></h1>
+                            <div className="bottom">
+                                <span><Emoji symbol={cards.cardSuitsSymbol} label={cards.cardSuitsLabel}/></span>
+                                <span>{cards.cardRanks}</span>
+                            </div>
+                        </div>  
                     ))}
                 </div>
             </div>
@@ -97,7 +109,27 @@ export class Poker extends Component{
             if (response.ok) {
                 const topCard = await response.json();
                 console.log(topCard)
-                this.addCardToState(topCard["suit"], topCard["rank"])
+                //this.addCardToState(topCard["suit"], topCard["rank"])
+            } else {
+                console.error(response.statusText);
+            }
+        } catch (error) {
+            console.error(error.toString());
+        }
+    }
+
+    async getCommunityCards() {
+        try {
+            const response = await fetch('StartNewRound', {
+                method: 'GET',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                }
+            });
+            if (response.ok) {
+                const communityCards = await response.json();
+                this.UpdateCommunityCards(communityCards.communityCards);
             } else {
                 console.error(response.statusText);
             }
