@@ -13,7 +13,7 @@ namespace Poker.Domain {
         public void TestTopCardFromDeck() {
             Deck deck = new Deck();
             Card card = deck.GetTopCardFromDeck();
-            Assert.AreEqual(Ranks.KING, card.rank);
+            Assert.AreEqual(Ranks.ACE, card.rank);
             Assert.AreEqual(Suits.SPADES, card.suit);
         }
 

@@ -18,7 +18,7 @@ namespace Poker.Domain {
         [Test]
         public void GetRankValueFromEnum() {
             Card card = new Card(Suits.CLUBS, Ranks.ACE);
-            Assert.AreEqual(1, card.GetRankValue());
+            Assert.AreEqual(14, card.GetRankValue());
         }
 
         [Test]

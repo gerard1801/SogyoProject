@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 namespace Poker.Domain {
     public class Hand {
-        public List<Card> hand { get; } 
+        public List<Card> hand { get; private set; } 
         private readonly int MaxHandLenght = 2;
         public Hand() {
             this.hand = new List<Card>();

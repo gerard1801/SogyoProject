@@ -4,7 +4,7 @@ using System.Linq;
 
 namespace Poker.Domain {
     public class Deck {
-        public Stack<Card> deck { get; }
+        public Stack<Card> deck { get; private set; }
 
         public Deck() {
             this.deck = FillDeckWithCards();

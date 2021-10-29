@@ -7,12 +7,12 @@ namespace Poker.Domain {
     }
 
     public enum Ranks {
-        ACE=1, TWO=2, THREE=3, FOUR=4, FIVE=5, SIX=6, SEVEN=7,
-        EIGHT=8, NINE=9, TEN=10, JACK=11, QUEEN=12, KING=13
+        TWO=2, THREE=3, FOUR=4, FIVE=5, SIX=6, SEVEN=7,
+        EIGHT=8, NINE=9, TEN=10, JACK=11, QUEEN=12, KING=13, ACE=14
     }
     public class Card {
-        public Suits suit { get; }
-        public Ranks rank { get; }
+        public Suits suit { get; private set; }
+        public Ranks rank { get; private set; }
 
         public Card(Suits suit, Ranks rank) 
         {

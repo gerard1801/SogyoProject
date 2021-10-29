@@ -18,7 +18,7 @@ namespace pokerApp.Controllers {
         [HttpGet]
         public Deck SetDeckInSession() {
             Deck deck = new Deck();
-            deck.ShuffleDeck();
+            //deck.ShuffleDeck();
             HttpContext.Session.SetObjectAsJson("deck", deck.deck.ToList());
             CommunityCards communityCards = new CommunityCards();
             HttpContext.Session.SetObjectAsJson("communityCards", communityCards.communityCards);

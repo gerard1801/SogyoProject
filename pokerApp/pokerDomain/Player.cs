@@ -3,7 +3,7 @@ using System.Collections.Generic;
 
 namespace Poker.Domain {
     public class Player {
-        public string name; 
+        public string name { get; private set; } 
         public Hand hand;
         
         public Player(string playerName) 
