@@ -1,9 +1,24 @@
+body {
+    background: rgb(12, 28, 45);
+}
+
+#oval {
+    width: 900px;
+    height: 500px;
+    position: absolute;
+    left: 20%;
+    border-radius: 200px;
+    background: rgb(19, 75, 167);
+    z-index: -1;
+
+}
+
 #communityCards {
     margin: auto;
+    position: relative;
     width: 60%;
-    top: 30%;
+    top: 10%;
     display: flex;
-    background: rgb(80, 135, 255);
 }
 
 #comCard1 {

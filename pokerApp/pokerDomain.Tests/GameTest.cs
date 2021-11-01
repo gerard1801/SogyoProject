@@ -45,8 +45,7 @@ namespace Poker.Domain {
             Game game = new Game();
             Card[] cardList = {new Card(Suits.CLUBS, Ranks.TEN), new Card(Suits.CLUBS, Ranks.JACK), 
             new Card(Suits.CLUBS, Ranks.QUEEN), new Card(Suits.CLUBS, Ranks.KING), new Card(Suits.CLUBS, Ranks.ACE)};
-            game.IsStraight(cardList);
-            Assert.AreEqual(true, game.isStraight);
+            Assert.AreEqual(true, game.IsStraight(cardList));
         }
 
         [Test]
@@ -54,8 +53,7 @@ namespace Poker.Domain {
             Game game = new Game();
             Card[] cardList = {new Card(Suits.CLUBS, Ranks.TWO), new Card(Suits.CLUBS, Ranks.THREE), 
             new Card(Suits.CLUBS, Ranks.FOUR), new Card(Suits.CLUBS, Ranks.FIVE), new Card(Suits.CLUBS, Ranks.ACE)};
-            game.IsStraight(cardList);
-            Assert.AreEqual(true, game.isStraight);
+            Assert.AreEqual(true, game.IsStraight(cardList));
         }
 
         [Test]
@@ -63,8 +61,7 @@ namespace Poker.Domain {
             Game game = new Game();
             Card[] cardList = {new Card(Suits.CLUBS, Ranks.TWO), new Card(Suits.CLUBS, Ranks.THREE), 
             new Card(Suits.CLUBS, Ranks.FOUR), new Card(Suits.CLUBS, Ranks.FIVE), new Card(Suits.CLUBS, Ranks.KING)};
-            game.IsStraight(cardList);
-            Assert.AreEqual(false, game.isStraight);
+            Assert.AreEqual(false, game.IsStraight(cardList));
         }
 
         [Test]
@@ -72,8 +69,7 @@ namespace Poker.Domain {
             Game game = new Game();
             Card[] cardList = {new Card(Suits.CLUBS, Ranks.TWO), new Card(Suits.CLUBS, Ranks.THREE), 
             new Card(Suits.CLUBS, Ranks.FOUR), new Card(Suits.CLUBS, Ranks.FIVE), new Card(Suits.CLUBS, Ranks.KING)};
-            game.IsFlush(cardList);
-            Assert.AreEqual(true, game.isFlush);
+            Assert.AreEqual(true, game.IsFlush(cardList));
         }
 
         [Test]
@@ -81,8 +77,7 @@ namespace Poker.Domain {
             Game game = new Game();
             Card[] cardList = {new Card(Suits.SPADES, Ranks.TWO), new Card(Suits.CLUBS, Ranks.THREE), 
             new Card(Suits.CLUBS, Ranks.FOUR), new Card(Suits.CLUBS, Ranks.FIVE), new Card(Suits.CLUBS, Ranks.KING)};
-            game.IsFlush(cardList);
-            Assert.AreEqual(false, game.isFlush);
+            Assert.AreEqual(false, game.IsFlush(cardList));
         }
 
         [Test]
@@ -90,9 +85,7 @@ namespace Poker.Domain {
             Game game = new Game();
             Card[] cardList = {new Card(Suits.CLUBS, Ranks.TEN), new Card(Suits.CLUBS, Ranks.JACK), 
             new Card(Suits.CLUBS, Ranks.QUEEN), new Card(Suits.CLUBS, Ranks.KING), new Card(Suits.CLUBS, Ranks.ACE)};
-            game.IsStraight(cardList);
-            game.IsFlush(cardList);
-            Assert.AreEqual("royal", game.CheckStraightFlush(cardList));
+            Assert.AreEqual(HandStrength.RoyalFlush, game.CheckHandStrength(cardList));
         }
 
         [Test]
@@ -100,9 +93,126 @@ namespace Poker.Domain {
             Game game = new Game();
             Card[] cardList = {new Card(Suits.CLUBS, Ranks.NINE) ,new Card(Suits.CLUBS, Ranks.TEN), 
             new Card(Suits.CLUBS, Ranks.JACK), new Card(Suits.CLUBS, Ranks.QUEEN), new Card(Suits.CLUBS, Ranks.KING)};
-            game.IsStraight(cardList);
-            game.IsFlush(cardList);
-            Assert.AreEqual("straight flush", game.CheckStraightFlush(cardList));
+            Assert.AreEqual(HandStrength.StraightFlush, game.CheckHandStrength(cardList));
+        }
+
+        [Test]
+        public void CountCardOccurences() {
+            Game game = new Game();
+            Card[] cardList = {new Card(Suits.CLUBS, Ranks.NINE) ,new Card(Suits.HEARTS, Ranks.NINE), 
+            new Card(Suits.DIAMONDS, Ranks.NINE), new Card(Suits.CLUBS, Ranks.ACE), new Card(Suits.DIAMONDS, Ranks.ACE)};
+            var countDict = game.CountCardOccurences(cardList);
+            Assert.AreEqual(3, countDict[Ranks.NINE]);
+            Assert.AreEqual(2, countDict[Ranks.ACE]);
+        }
+
+        [Test]
+        public void IsFourOfAKindAsFunction() {
+            Game game = new Game();
+            Card[] cardList = {new Card(Suits.CLUBS, Ranks.ACE) ,new Card(Suits.DIAMONDS, Ranks.ACE), 
+            new Card(Suits.HEARTS, Ranks.ACE), new Card(Suits.SPADES, Ranks.ACE), new Card(Suits.CLUBS, Ranks.KING)};
+            var cardCountDictionary = game.CountCardOccurences(cardList);
+            Assert.AreEqual(true, game.IsFourOfAKind(cardCountDictionary));
+        }
+
+        [Test]
+        public void IsFourOfAKindInCheckHandStrengthFunction() {
+            Game game = new Game();
+            Card[] cardList = {new Card(Suits.CLUBS, Ranks.ACE) ,new Card(Suits.DIAMONDS, Ranks.ACE), 
+            new Card(Suits.HEARTS, Ranks.ACE), new Card(Suits.SPADES, Ranks.ACE), new Card(Suits.CLUBS, Ranks.KING)};
+            Assert.AreEqual(HandStrength.FourOfAKind, game.CheckHandStrength(cardList));
+        }
+
+        [Test]
+        public void IsFullHouseAsFunction() {
+            Game game = new Game();
+            Card[] cardList = {new Card(Suits.CLUBS, Ranks.ACE) ,new Card(Suits.DIAMONDS, Ranks.ACE), 
+            new Card(Suits.HEARTS, Ranks.ACE), new Card(Suits.SPADES, Ranks.KING), new Card(Suits.CLUBS, Ranks.KING)};
+            var cardCountDictionary = game.CountCardOccurences(cardList);
+            Assert.AreEqual(true, game.IsFullHouse(cardCountDictionary));
+        }
+
+        [Test]
+        public void IsFullHouseInCheckHandStrengthFunction() {
+            Game game = new Game();
+            Card[] cardList = {new Card(Suits.CLUBS, Ranks.ACE) ,new Card(Suits.DIAMONDS, Ranks.ACE), 
+            new Card(Suits.HEARTS, Ranks.ACE), new Card(Suits.SPADES, Ranks.KING), new Card(Suits.CLUBS, Ranks.KING)};
+            Assert.AreEqual(HandStrength.FullHouse, game.CheckHandStrength(cardList));
+        }
+
+        [Test]
+        public void IsFlushInCheckHandStrengthFunction() {
+            Game game = new Game();
+            Card[] cardList = {new Card(Suits.CLUBS, Ranks.TWO), new Card(Suits.CLUBS, Ranks.THREE), 
+            new Card(Suits.CLUBS, Ranks.FOUR), new Card(Suits.CLUBS, Ranks.FIVE), new Card(Suits.CLUBS, Ranks.KING)};
+            Assert.AreEqual(HandStrength.Flush, game.CheckHandStrength(cardList));
+        }
+
+        [Test]
+        public void IsStraightInCheckHandStrengthFunction() {
+            Game game = new Game();
+            Card[] cardList = {new Card(Suits.HEARTS, Ranks.TWO), new Card(Suits.CLUBS, Ranks.THREE), 
+            new Card(Suits.DIAMONDS, Ranks.FOUR), new Card(Suits.SPADES, Ranks.FIVE), new Card(Suits.CLUBS, Ranks.ACE)};
+            Assert.AreEqual(HandStrength.Straight, game.CheckHandStrength(cardList));
+        }
+
+        [Test]
+        public void IsThreeOfAKindAsFunction() {
+            Game game = new Game();
+            Card[] cardList = {new Card(Suits.CLUBS, Ranks.ACE) ,new Card(Suits.DIAMONDS, Ranks.ACE), 
+            new Card(Suits.HEARTS, Ranks.ACE), new Card(Suits.SPADES, Ranks.QUEEN), new Card(Suits.CLUBS, Ranks.KING)};
+            var cardCountDictionary = game.CountCardOccurences(cardList);
+            Assert.AreEqual(true, game.IsThreeOfAKind(cardCountDictionary));
+        }
+
+        [Test]
+        public void IsThreeOfAKindInCheckHandStrengthFunction() {
+            Game game = new Game();
+            Card[] cardList = {new Card(Suits.CLUBS, Ranks.ACE) ,new Card(Suits.DIAMONDS, Ranks.ACE), 
+            new Card(Suits.HEARTS, Ranks.ACE), new Card(Suits.SPADES, Ranks.QUEEN), new Card(Suits.CLUBS, Ranks.KING)};
+            Assert.AreEqual(HandStrength.ThreeOfAKind, game.CheckHandStrength(cardList));
+        }
+
+        [Test]
+        public void PairCounterIsTwoPairAsFunction() {
+            Game game = new Game();
+            Card[] cardList = {new Card(Suits.CLUBS, Ranks.ACE) ,new Card(Suits.DIAMONDS, Ranks.ACE), 
+            new Card(Suits.HEARTS, Ranks.QUEEN), new Card(Suits.SPADES, Ranks.QUEEN), new Card(Suits.CLUBS, Ranks.KING)};
+            var cardCountDictionary = game.CountCardOccurences(cardList);
+            Assert.AreEqual(2, game.pairCounter(cardCountDictionary));
+        }
+
+        [Test]
+        public void PairCounterIsTwoPairInCheckHandStrengthFunction() {
+            Game game = new Game();
+            Card[] cardList = {new Card(Suits.CLUBS, Ranks.ACE) ,new Card(Suits.DIAMONDS, Ranks.ACE), 
+            new Card(Suits.HEARTS, Ranks.QUEEN), new Card(Suits.SPADES, Ranks.QUEEN), new Card(Suits.CLUBS, Ranks.KING)};
+            Assert.AreEqual(HandStrength.TwoPair, game.CheckHandStrength(cardList));
+        }
+
+        [Test]
+        public void PairCounterIsOnePairAsFunction() {
+            Game game = new Game();
+            Card[] cardList = {new Card(Suits.CLUBS, Ranks.ACE) ,new Card(Suits.DIAMONDS, Ranks.ACE), 
+            new Card(Suits.HEARTS, Ranks.THREE), new Card(Suits.SPADES, Ranks.QUEEN), new Card(Suits.CLUBS, Ranks.KING)};
+            var cardCountDictionary = game.CountCardOccurences(cardList);
+            Assert.AreEqual(1, game.pairCounter(cardCountDictionary));
+        }
+
+        [Test]
+        public void PairCounterIsOnePairInCheckHandStrengthFunction() {
+            Game game = new Game();
+            Card[] cardList = {new Card(Suits.CLUBS, Ranks.ACE) ,new Card(Suits.DIAMONDS, Ranks.ACE), 
+            new Card(Suits.HEARTS, Ranks.THREE), new Card(Suits.SPADES, Ranks.QUEEN), new Card(Suits.CLUBS, Ranks.KING)};
+            Assert.AreEqual(HandStrength.Pair, game.CheckHandStrength(cardList));
+        }
+
+        [Test]
+        public void HighCardInHandStrengthFunction() {
+            Game game = new Game();
+            Card[] cardList = {new Card(Suits.CLUBS, Ranks.ACE) ,new Card(Suits.DIAMONDS, Ranks.TWO), 
+            new Card(Suits.HEARTS, Ranks.THREE), new Card(Suits.SPADES, Ranks.QUEEN), new Card(Suits.CLUBS, Ranks.KING)};
+            Assert.AreEqual(HandStrength.HighCard, game.CheckHandStrength(cardList));
         }
     }
 

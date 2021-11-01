@@ -32,6 +32,9 @@ export class Poker extends Component {
         };
     }
 
+
+
+
     UpdateCommunityCards = (communityCards) => {
         const newState = [];
         for (let i = 0; i< communityCards.length; i++) {
@@ -59,21 +62,25 @@ export class Poker extends Component {
                 <button onClick={() => this.getCardFromDeck()}>kaart</button>
                 <button onClick={() => this.GetNewShuffledDeck()}>deck laden</button>
                 <button onClick={() => this.getCommunityCards()}>communityCards</button>
-                <div id="communityCards">
-                    {this.state.communityCards.map(cards => (
-                        <div key={cards.id} className="outline shadow rounded"> 
-                            <div className="top">
-                                <span>{cards.cardRanks}</span>
-                                <span><Emoji symbol={cards.cardSuitsSymbol} label={cards.cardSuitsLabel}/></span>
-                            </div>
-                            <h1><Emoji symbol={cards.cardSuitsSymbol} label={cards.cardSuitsLabel}/></h1>
-                            <div className="bottom">
-                                <span><Emoji symbol={cards.cardSuitsSymbol} label={cards.cardSuitsLabel}/></span>
-                                <span>{cards.cardRanks}</span>
-                            </div>
-                        </div>  
-                    ))}
-                </div>
+                <body>
+                    <div id="oval">
+                        <div id="communityCards">
+                            {this.state.communityCards.map(cards => (
+                                <div key={cards.id} className="outline shadow rounded"> 
+                                    <div className="top">
+                                        <span>{cards.cardRanks}</span>
+                                        <span><Emoji symbol={cards.cardSuitsSymbol} label={cards.cardSuitsLabel}/></span>
+                                    </div>
+                                    <h1><Emoji symbol={cards.cardSuitsSymbol} label={cards.cardSuitsLabel}/></h1>
+                                    <div className="bottom">
+                                        <span><Emoji symbol={cards.cardSuitsSymbol} label={cards.cardSuitsLabel}/></span>
+                                        <span>{cards.cardRanks}</span>
+                                    </div>
+                                </div>  
+                            ))}
+                        </div>
+                    </div>
+                </body>
             </div>
         )
     }
