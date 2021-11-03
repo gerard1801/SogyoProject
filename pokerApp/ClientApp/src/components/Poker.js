@@ -1,4 +1,5 @@
 import React, { Component, useState } from "react";
+import { ReactComponent as PokerSVG } from '../svg/poker-cards-svgrepo-com.svg';
 import './Poker.css';
 
 const Emoji = props => (
@@ -29,9 +30,29 @@ export class Poker extends Component {
         super(props);
         this.state = {
             communityCards: [],
+            playerCards: [],
         };
     }
 
+    UpdatePlayerCards = (playerCards) => {
+        const newState = [];
+        for (let i = 0; i< playerCards["hand"].length; i++) {
+            const card = playerCards["hand"][i];
+            if (card["suit"] === 0) {
+                newState.push({cardRanks: card["rank"], cardSuitsSymbol: "♣️", cardSuitsLabel: "clubs", id: "comCard" + i})
+            }
+            if (card["suit"] === 1) {
+                newState.push({cardRanks: card["rank"], cardSuitsSymbol: "♦️", cardSuitsLabel: "diamonds", id: "comCard" + i})
+            }
+            if (card["suit"] === 2) {
+                newState.push({cardRanks: card["rank"], cardSuitsSymbol: "♥️", cardSuitsLabel: "hearts", id: "comCard" + i})
+            }
+            if (card["suit"] === 3) {
+                newState.push({cardRanks: card["rank"], cardSuitsSymbol: "♠️", cardSuitsLabel: "spades", id: "comCard" + i})
+            }
+        }
+        this.setState({playerCards: newState})
+    }
 
 
 
@@ -58,12 +79,15 @@ export class Poker extends Component {
     render() {
         return (
             <div>
-                <h2>Poker</h2>
-                <button onClick={() => this.getCardFromDeck()}>kaart</button>
-                <button onClick={() => this.GetNewShuffledDeck()}>deck laden</button>
-                <button onClick={() => this.getCommunityCards()}>communityCards</button>
+                <button onClick={() => this.GetNewShuffledDeck()}>Nieuw deck laden</button>
+                <button onClick={() => this.getCardFromDeck()}>Nieuwe hand</button>
+                <button onClick={() => this.getCommunityCards()}>community cards</button>
                 <body>
+                    <div id="pokerSVG">
+                        <PokerSVG></PokerSVG>
+                    </div>
                     <div id="oval">
+                        <div id="innerOval"></div>
                         <div id="communityCards">
                             {this.state.communityCards.map(cards => (
                                 <div key={cards.id} className="outline shadow rounded"> 
@@ -79,7 +103,23 @@ export class Poker extends Component {
                                 </div>  
                             ))}
                         </div>
+                        <div id="playerCards">
+                            {this.state.playerCards.map(cards => (
+                                    <div key={cards.id} className="outline shadow rounded"> 
+                                        <div className="top">
+                                            <span>{cards.cardRanks}</span>
+                                            <span><Emoji symbol={cards.cardSuitsSymbol} label={cards.cardSuitsLabel}/></span>
+                                        </div>
+                                        <h1><Emoji symbol={cards.cardSuitsSymbol} label={cards.cardSuitsLabel}/></h1>
+                                        <div className="bottom">
+                                            <span><Emoji symbol={cards.cardSuitsSymbol} label={cards.cardSuitsLabel}/></span>
+                                            <span>{cards.cardRanks}</span>
+                                        </div>
+                                    </div>  
+                                ))}
+                        </div>
                     </div>
+                    
                 </body>
             </div>
         )
@@ -114,9 +154,8 @@ export class Poker extends Component {
                 }
             });
             if (response.ok) {
-                const topCard = await response.json();
-                console.log(topCard)
-                //this.addCardToState(topCard["suit"], topCard["rank"])
+                const playerHand = await response.json();
+                this.UpdatePlayerCards(playerHand);
             } else {
                 console.error(response.statusText);
             }

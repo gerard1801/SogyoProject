@@ -13,15 +13,19 @@ namespace pokerApp.Controllers {
     public class GetCardFromDeckController : ControllerBase {
 
     [HttpGet]
-    public Card GetTopCard() {
+    public Hand GetTopCard() {
         var obj = HttpContext.Session.GetObjectFromJson<IList<Card>>("deck");
         Deck deck = new Deck(obj);
-        Card topCard = deck.GetTopCardFromDeck();
+        Player player = new Player("gerard");
+        player.hand.RecieveCard(deck.GetTopCardFromDeck());
+        deck.RemoveTopCardFromDeck();
+        player.hand.RecieveCard(deck.GetTopCardFromDeck());
         deck.RemoveTopCardFromDeck();
 
         HttpContext.Session.SetObjectAsJson("deck", deck.deck.ToList());
+        HttpContext.Session.SetObjectAsJson("player", player);
 
-        return topCard;
+        return player.hand;
     }
     }
 }
